@@ -3,10 +3,10 @@ import clsx from "clsx";
 
 import { Creator } from "@/app/lib/types/creator.enum";
 import { useGameOfLife } from "@/app/hooks/useGameOfLife";
-import { useGPTMessages } from "@/app/hooks/useGPTMessages";
 import { isSavedMsg } from "@/app/lib/utils/isSavedMsg";
 import { TO_DRAW_REGEX } from "@/app/lib/constants/regex.constants";
 import { stringToGameOfLifeParams } from "@/app/lib/utils/stringToGameOfLifeParams";
+import { useGPTMessages } from "@/app/hooks/useGPTMessages";
 
 interface IProps {
   from: Creator;
@@ -26,7 +26,14 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
   const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(text);
 
   useEffect(() => {
-    if (!isSavedMsg(localStorageMessages, id) && match && canvasRef.current && from === Creator.ASSISTANT) {
+    if (
+      // localStorageMessages &&
+      // !isSavedMsg(localStorageMessages, id) &&
+      match &&
+      canvasRef.current &&
+      from === Creator.ASSISTANT
+    ) {
+      console.log(match)
       const { iterationsCount, initialGameOfLifeState } = stringToGameOfLifeParams(match[1], match[2]);
       runGameOfLife(initialGameOfLifeState, iterationsCount);
     }
@@ -49,13 +56,15 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
         {from === Creator.USER && <div className="msg-item bg-me-icon">ME</div>}
         <pre className="w-[653px] whitespace-pre-wrap overflow-auto">{text}</pre>
       </div>
-      {!isSavedMsg(localStorageMessages, id) && from === Creator.ASSISTANT && requiresDrawing && (
-        <div>
+      {
+        // localStorageMessages &&
+        // !isSavedMsg(localStorageMessages, id) &&
+        from === Creator.ASSISTANT &&
+        requiresDrawing && (
           <div>
             <canvas ref={canvasRef}></canvas>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };

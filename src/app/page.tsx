@@ -18,11 +18,10 @@ const GPTPage: FC = () => {
     return signIn();
   }
 
-
   return (
     <main className="pb-12">
       <div className="w-full mx-2 flex flex-col items-start gap-3 pt-6 last:mb-6 md:mx-auto md:max-w-3xl">
-        {messages.map(({ from, content, requiresDrawing, isDone, id }: MessageType) =>
+        {messages.map(({ from, content, requiresDrawing, isDone, id }: MessageType) => (
           <Message
             from={from}
             text={content}
@@ -31,13 +30,9 @@ const GPTPage: FC = () => {
             owner={session?.user?.email}
             requiresDrawing={requiresDrawing}
             isDone={isDone}
-          />,
-        )}
-        {error && <Message
-          isErrorMessage
-          text={error}
-          from={Creator.ASSISTANT}
-        />}
+          />
+        ))}
+        {error && <Message isErrorMessage text={error} from={Creator.ASSISTANT} />}
       </div>
       <Input input={messageInput} handleSubmit={handleSubmit} disabled={isLoading} />
     </main>

@@ -10,7 +10,7 @@ interface GPTMessagesHookResult {
   messages: Message[];
   handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   isLoading: boolean;
-  localStorageMessages: Message[];
+  localStorageMessages: Message[] | null;
   error: string;
 }
 
@@ -24,7 +24,7 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
   const messageInput = useRef<HTMLTextAreaElement | null>(null);
 
   const [messages, setMessages] = useState<Message[]>([]);
-  const [localStorageMessages, setLocalStorageMessages] = useState<Message[]>([]);
+  const [localStorageMessages, setLocalStorageMessages] = useState<Message[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
@@ -34,7 +34,7 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     setLocalStorageMessages(initialMessages);
 
     setMessages(initialMessages.filter(message => message.owner === email));
-  }, [email]);
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

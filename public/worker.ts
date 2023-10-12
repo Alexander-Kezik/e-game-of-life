@@ -1,17 +1,17 @@
 self.addEventListener("message", (
-  event: MessageEvent<{ initialState: (0 | 1)[][], iterations: number }>,
+  event: MessageEvent<{ initialState: (0 | 1)[][], iterationsCount: number }>,
 ) => {
   const data = event.data;
   const initialState = data.initialState;
-  const iterations = data.iterations;
+  const iterations = data.iterationsCount;
 
   const numRows = initialState.length;
   const numCols = initialState[0].length;
 
   const createEmptyMatrix = (rows: number, cols: number) => {
-    const matrix: 0[][] = [];
+    const matrix: (0 | 1)[][] = [];
     for (let i = 0; i < rows; i++) {
-      const row = new Array<0>(cols).fill(0);
+      const row: (0 | 1)[] = new Array(cols).fill(0);
       matrix.push(row);
     }
 
@@ -19,7 +19,7 @@ self.addEventListener("message", (
   };
 
   const applyRules = (matrix: (0 | 1)[][], x: number, y: number) => {
-    const neighbors: (-1 | 0 | 1)[][] = [
+    const neighbors: (-1 |0 | 1)[][] = [
       [-1, -1], [-1, 0], [-1, 1],
       [0, -1], [0, 1],
       [1, -1], [1, 0], [1, 1],

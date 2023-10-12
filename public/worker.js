@@ -1,7 +1,7 @@
 self.addEventListener("message", function (event) {
     var data = event.data;
     var initialState = data.initialState;
-    var iterations = data.iterations;
+    var iterations = data.iterationsCount;
     var numRows = initialState.length;
     var numCols = initialState[0].length;
     var createEmptyMatrix = function (rows, cols) {

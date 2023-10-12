@@ -7,11 +7,14 @@
  */
 export const stringToGameOfLifeParams = (arr: string, iterations: string) => {
   const rows: string[] = arr.trim().split("\n");
-  const initialGameOfLifeState: (0 | 1)[][] = rows.map(row => row.split("").map(
-    item => (parseInt(item, 10) as 0 | 1)),
+  const initialGameOfLifeState: (0 | 1)[][] = rows.map(row =>
+    row
+      .replace(/\s/g, "")
+      .split("")
+      .map(item => parseInt(item, 10) as 0 | 1),
   );
 
   const iterationsCount: number = parseInt(iterations, 10);
 
-  return { initialGameOfLifeState, iterationsCount }
+  return { initialGameOfLifeState, iterationsCount };
 };
