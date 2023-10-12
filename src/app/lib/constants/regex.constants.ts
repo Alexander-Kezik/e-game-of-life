@@ -1,1 +1,1 @@
-export const TO_DRAW_REGEX = /```[\s\S ]+?([10][01\n ]+?)```[\s\S ]+?(\d+)/i
+export const TO_DRAW_REGEX: RegExp = /```[\s\S ]+?([10][01\n ]+?)```[\s\S ]+?(\d+)/i
