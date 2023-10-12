@@ -83,7 +83,6 @@ Starting State:
 00101000010011111001001101000101101110011001010000
 ```
 
-Number of Iterations: 5000
+Number of Iterations: 5000</pre>
 
 ![Local image](./game-of-life-example.png)
-</pre>
