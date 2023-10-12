@@ -22,8 +22,8 @@ const Input: FC<IProps> = ({ input, handleSubmit, disabled }) => {
         <button
           className={
             clsx(
-              "bg-green-500 rounded-md w-10 h-10 border-none cursor-pointer flex justify-center items-center",
-              disabled && "bg-red-500",
+              "bg-success rounded-md w-10 h-10 border-none cursor-pointer flex justify-center items-center",
+              disabled && "bg-cancel",
             )}
           disabled={disabled}
         >

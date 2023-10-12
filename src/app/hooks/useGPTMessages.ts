@@ -33,8 +33,8 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     const initialMessages: Message[] = savedMessages ? JSON.parse(savedMessages) : [];
     setLocalStorageMessages(initialMessages);
 
-    setMessages(initialMessages);
-  }, []);
+    setMessages(initialMessages.filter(message => message.owner === email));
+  }, [email]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

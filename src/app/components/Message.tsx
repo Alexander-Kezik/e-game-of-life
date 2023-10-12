@@ -34,27 +34,28 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
 
   return (
     <div
-      className={
-        clsx("border-b border-gray-300 flex flex-col items-center", from === Creator.ASSISTANT && "bg-gray-100")}>
+      className={clsx(
+        "border-b border-gray-300 flex flex-col items-center",
+        from === Creator.ASSISTANT && "bg-assistant",
+      )}
+    >
       <div
-        className={
-          clsx(
-            "flex w-[740px] justify-between px-4 py-6",
-            isErrorMessage && "shadow-[inset_0_0_1.5em_red] rounded-md",
-          )}>
-        {from === Creator.ASSISTANT &&
-          <div className="flex justify-center items-center text-white rounded w-10 h-10 bg-amber-500">GPT</div>
-        }
-        {from === Creator.USER &&
-          <div className="flex justify-center items-center text-white rounded w-10 h-10 bg-cyan-200">ME</div>
-        }
+        className={clsx(
+          "flex w-[740px] justify-between px-4 py-6",
+          isErrorMessage && "shadow-[inset_0_0_1.5em_red] rounded-md",
+        )}
+      >
+        {from === Creator.ASSISTANT && <div className="msg-item bg-assistant-icon">GPT</div>}
+        {from === Creator.USER && <div className="msg-item bg-me-icon">ME</div>}
         <pre className="w-[653px] whitespace-pre-wrap overflow-auto">{text}</pre>
       </div>
-      {!isSavedMsg(localStorageMessages, id) && from === Creator.ASSISTANT && requiresDrawing && <div>
+      {!isSavedMsg(localStorageMessages, id) && from === Creator.ASSISTANT && requiresDrawing && (
         <div>
-          <canvas ref={canvasRef}></canvas>
+          <div>
+            <canvas ref={canvasRef}></canvas>
+          </div>
         </div>
-      </div>}
+      )}
     </div>
   );
 };

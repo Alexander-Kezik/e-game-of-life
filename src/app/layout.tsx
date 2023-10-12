@@ -9,7 +9,7 @@ import Header from "@/app/components/Header";
 import AuthProvider from "@/app/components/AuthProvider";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-import "./globals.scss";
+import "./globals.css";
 
 const robotoFont: NextFont = Roboto({
   weight: "400",

@@ -14,13 +14,13 @@ const SignInButton: FC<IProps> = ({ session }) => {
       {session ? (
         <button
           onClick={() => signOut()}
-          className="p-2 border-none cursor-pointer rounded-md text-white bg-red-600">
+          className="btn-main bg-cancel">
           Sign Out
         </button>
       ) : (
         <button
           onClick={() => signIn()}
-          className="p-2 border-none cursor-pointer rounded-md text-white bg-green-500">
+          className="btn-main bg-success">
           Sign In
         </button>
       )}

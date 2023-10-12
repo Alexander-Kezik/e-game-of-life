@@ -9,16 +9,17 @@ import { AuthContext } from "@/app/components/AuthProvider";
 import Input from "@/app/components/Input";
 import { Creator } from "@/app/lib/types/creator.enum";
 import { Message as MessageType } from "@/app/lib/types/message.type";
+import { redirect } from "next/navigation";
 
 
 const GPTPage: FC = () => {
   const { session } = useContext(AuthContext);
+  const { isLoading, error, messageInput, handleSubmit, messages } = useGPTMessages(session?.user?.email || "");
 
   if (!session?.user?.email) {
-    return signIn();
+    return redirect('/api/auth/signin');
   }
 
-  const { isLoading, error, messageInput, handleSubmit, messages } = useGPTMessages("session.user.email");
 
   return (
     <main className="pb-12">
