@@ -2,9 +2,9 @@ import OpenAI, { APIError } from "openai";
 import { Stream } from "openai/streaming";
 import { ChatCompletionChunk } from "openai/resources/chat/completions";
 import { getServerSession, Session } from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { NextRequest, NextResponse } from "next/server";
 
 const openai: OpenAI = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
