@@ -1,0 +1,1 @@
+export const TO_DRAW_REGEX = /```[\s\S ]+?([01\n ]+?)```[\s\S ]+?(\d+)/i;
