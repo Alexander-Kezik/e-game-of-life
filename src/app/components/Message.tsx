@@ -1,11 +1,9 @@
-import { FC, MutableRefObject, useEffect, useRef } from "react";
+import { FC } from "react";
 import clsx from "clsx";
 
 import { Creator } from "@/app/lib/types/creator.enum";
-import { useGameOfLife } from "@/app/hooks/useGameOfLife";
 import { isSavedMsg } from "@/app/lib/utils/isSavedMsg";
 import { TO_DRAW_REGEX } from "@/app/lib/constants/regex.constants";
-import { stringToGameOfLifeParams } from "@/app/lib/utils/stringToGameOfLifeParams";
 import { useGPTMessages } from "@/app/hooks/useGPTMessages";
 import GameOfLife from "@/app/components/GameOfLife";
 
