@@ -6,5 +6,4 @@ export interface Message {
   content: string;
   owner: string;
   requiresDrawing: boolean;
-  // isDone?: boolean;
 }

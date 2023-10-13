@@ -82,7 +82,6 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
 
     const currentResponse: Message = {
       id: v4(),
-      // isDone: false,
       from: Creator.ASSISTANT,
       content: "",
       owner: email,
@@ -92,17 +91,16 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     setMessages(prev => [...prev, userMessage]);
 
     while (true) {
-      const { value, done: doneReading } = await reader.read();
+      const { value, done } = await reader.read();
       const chunkValue = decoder.decode(value);
 
       currentResponse.content += chunkValue;
       setMessages(prev => [...prev.slice(0, -1), currentResponse]);
 
-      if (doneReading) break;
+      if (done) break;
     }
 
     const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(currentResponse.content);
-    // currentResponse.isDone = true;
 
     if (match) {
       currentResponse.requiresDrawing = true;
