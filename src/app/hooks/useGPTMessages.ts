@@ -6,9 +6,8 @@ import { TO_DRAW_REGEX } from "@/app/lib/constants/regex.constants";
 import { Creator } from "@/app/lib/types/creator.enum";
 
 interface GPTMessagesHookResult {
-  messageInput: RefObject<HTMLTextAreaElement | null>;
   messages: Message[];
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  handleSubmit: (message: string) => Promise<void>;
   isLoading: boolean;
   localStorageMessages: Message[] | null;
   error: string;
@@ -21,8 +20,6 @@ interface GPTMessagesHookResult {
  * @returns {GPTMessagesHookResult} An object with properties and functions related to GPT messages handling.
  */
 export function useGPTMessages(email: string): GPTMessagesHookResult {
-  const messageInput = useRef<HTMLTextAreaElement | null>(null);
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [localStorageMessages, setLocalStorageMessages] = useState<Message[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -34,14 +31,12 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     setLocalStorageMessages(initialMessages);
 
     setMessages(initialMessages.filter(message => message.owner === email));
-  }, []);
+  }, [email]);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (message: string) => {
     setIsLoading(true);
     setError("");
 
-    const message: string | undefined = messageInput.current?.value;
     if (!message) return;
 
     const userMessage: Message = {
@@ -53,7 +48,6 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     };
 
     setMessages(prev => [...prev, userMessage]);
-    messageInput.current!.value = "";
 
     const response: Response = await fetch("/api/chat", {
       method: "POST",
@@ -111,5 +105,5 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     localStorage.setItem("gpt-messages", JSON.stringify([...messages, userMessage, currentResponse]));
   };
 
-  return { messageInput, messages, handleSubmit, isLoading, localStorageMessages, error };
+  return { messages, handleSubmit, isLoading, localStorageMessages, error };
 }
