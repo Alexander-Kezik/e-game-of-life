@@ -7,6 +7,7 @@ import { isSavedMsg } from "@/app/lib/utils/isSavedMsg";
 import { TO_DRAW_REGEX } from "@/app/lib/constants/regex.constants";
 import { stringToGameOfLifeParams } from "@/app/lib/utils/stringToGameOfLifeParams";
 import { useGPTMessages } from "@/app/hooks/useGPTMessages";
+import GameOfLife from "@/app/components/GameOfLife";
 
 interface IProps {
   from: Creator;
@@ -19,25 +20,9 @@ interface IProps {
 }
 
 const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawing, isDone, id }) => {
-  const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef<HTMLCanvasElement | null>(null);
-  const { runGameOfLife } = useGameOfLife(canvasRef);
   const { localStorageMessages } = useGPTMessages(owner || "");
 
   const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(text);
-
-  useEffect(() => {
-    if (
-      localStorageMessages &&
-      !isSavedMsg(localStorageMessages, id) &&
-      match &&
-      canvasRef.current &&
-      from === Creator.ASSISTANT
-    ) {
-      console.log(match)
-      const { iterationsCount, initialGameOfLifeState } = stringToGameOfLifeParams(match[1], match[2]);
-      runGameOfLife(initialGameOfLifeState, iterationsCount);
-    }
-  }, [canvasRef.current, isDone]);
 
   return (
     <div
@@ -61,9 +46,7 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
         !isSavedMsg(localStorageMessages, id) &&
         from === Creator.ASSISTANT &&
         requiresDrawing && (
-          <div>
-            <canvas ref={canvasRef}></canvas>
-          </div>
+          <GameOfLife match={match} />
         )}
     </div>
   );

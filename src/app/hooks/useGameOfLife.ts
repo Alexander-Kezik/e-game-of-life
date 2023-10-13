@@ -13,7 +13,6 @@ export function useGameOfLife(canvasRef: MutableRefObject<HTMLCanvasElement | nu
 
     worker.onmessage = (event: MessageEvent<(0 | 1)[][]>) => {
       const result: (0 | 1)[][] = event.data;
-      console.log(result);
       setOutput(result);
       worker.terminate();
     };
