@@ -27,8 +27,8 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
 
   useEffect(() => {
     if (
-      // localStorageMessages &&
-      // !isSavedMsg(localStorageMessages, id) &&
+      localStorageMessages &&
+      !isSavedMsg(localStorageMessages, id) &&
       match &&
       canvasRef.current &&
       from === Creator.ASSISTANT
@@ -57,8 +57,8 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
         <pre className="w-[653px] whitespace-pre-wrap overflow-auto">{text}</pre>
       </div>
       {
-        // localStorageMessages &&
-        // !isSavedMsg(localStorageMessages, id) &&
+        localStorageMessages &&
+        !isSavedMsg(localStorageMessages, id) &&
         from === Creator.ASSISTANT &&
         requiresDrawing && (
           <div>
