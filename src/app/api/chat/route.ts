@@ -11,9 +11,9 @@ const openai: OpenAI = new OpenAI({
 });
 
 type RequestData = {
-  currentModel: string
-  message: string
-}
+  currentModel: string;
+  message: string;
+};
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const session: Session | null = await getServerSession(authOptions);
@@ -51,17 +51,22 @@ export async function POST(request: NextRequest, response: NextResponse) {
     return new Response(stream);
   } catch (e) {
     if (e instanceof APIError) {
-      switch (e.status) {
+      const status = e.status;
+      const message = (e.error as { message: string }).message;
+
+      switch (status) {
+        case 400:
+          return NextResponse.json(message, { status });
         case 401:
-          return NextResponse.json("Ensure the correct API key and requesting organization are being used.", { status: 401 });
+          return NextResponse.json(message, { status });
         case 429:
-          return NextResponse.json("You are sending requests too quickly", { status: e.status });
+          return NextResponse.json(message, { status });
         case 500:
-          return NextResponse.json("The server had an error while processing your request", { status: 500 });
+          return NextResponse.json(message, { status });
         case 503:
-          return NextResponse.json("The engine is currently overloaded, please try again later", { status: 503 });
+          return NextResponse.json(message, { status });
         default:
-          return NextResponse.json("Unexpected error, try again later.", { status: 500 });
+          return NextResponse.json("Unexpected error, try again later.", { status });
       }
     }
 

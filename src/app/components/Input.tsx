@@ -23,7 +23,7 @@ const Input: FC<IProps> = ({ input, handleSubmit, disabled }) => {
           className={
             clsx(
               "bg-success rounded-md w-10 h-10 border-none cursor-pointer flex justify-center items-center",
-              disabled && "bg-cancel",
+              disabled && "cursor-not-allowed",
             )}
           disabled={disabled}
         >
