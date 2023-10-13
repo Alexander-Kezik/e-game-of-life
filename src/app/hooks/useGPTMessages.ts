@@ -94,9 +94,7 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
       if (done) break;
     }
 
-    const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(currentResponse.content);
-
-    if (match) {
+    if (TO_DRAW_REGEX.exec(currentResponse.content)) {
       currentResponse.requiresDrawing = true;
     }
 
