@@ -14,10 +14,9 @@ interface IProps {
   owner?: string | null | undefined;
   isErrorMessage?: boolean;
   requiresDrawing?: boolean;
-  isDone?: boolean;
 }
 
-const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawing, isDone, id }) => {
+const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawing, id }) => {
   const { localStorageMessages } = useGPTMessages(owner || "");
 
   const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(text);

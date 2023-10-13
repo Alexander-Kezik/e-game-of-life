@@ -82,7 +82,7 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
 
     const currentResponse: Message = {
       id: v4(),
-      isDone: false,
+      // isDone: false,
       from: Creator.ASSISTANT,
       content: "",
       owner: email,
@@ -102,7 +102,7 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     }
 
     const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(currentResponse.content);
-    currentResponse.isDone = true;
+    // currentResponse.isDone = true;
 
     if (match) {
       currentResponse.requiresDrawing = true;

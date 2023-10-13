@@ -21,7 +21,7 @@ const GPTPage: FC = () => {
   return (
     <main className="pb-12">
       <div className="w-full mx-2 flex flex-col items-start gap-3 pt-6 last:mb-6 md:mx-auto md:max-w-3xl">
-        {messages.map(({ from, content, requiresDrawing, isDone, id }: MessageType) => (
+        {messages.map(({ from, content, requiresDrawing, id }: MessageType) => (
           <Message
             from={from}
             text={content}
@@ -29,7 +29,6 @@ const GPTPage: FC = () => {
             id={id}
             owner={session?.user?.email}
             requiresDrawing={requiresDrawing}
-            isDone={isDone}
           />
         ))}
         {error && <Message isErrorMessage text={error} from={Creator.ASSISTANT} />}
