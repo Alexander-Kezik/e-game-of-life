@@ -7,7 +7,7 @@ import { getServerSession, Session } from "next-auth";
 import NextAuthProvider from "@/app/components/SessionProvider";
 import Header from "@/app/components/Header";
 import AuthProvider from "@/app/components/AuthProvider";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/lib/constants/auth.constants";
 
 import "./globals.css";
 

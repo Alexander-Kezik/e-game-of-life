@@ -44,7 +44,7 @@ export function useGameOfLife(canvasRef: MutableRefObject<HTMLCanvasElement | nu
         }
       }
     }
-  }, [output]);
+  }, [canvasRef, output]);
 
   return { runGameOfLife };
 }

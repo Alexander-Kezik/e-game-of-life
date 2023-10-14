@@ -4,7 +4,7 @@ import { ChatCompletionChunk } from "openai/resources/chat/completions";
 import { getServerSession, Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/lib/constants/auth.constants";
 
 const openai: OpenAI = new OpenAI({
   apiKey: process.env.OPENAI_KEY,

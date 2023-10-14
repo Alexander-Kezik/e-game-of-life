@@ -2,7 +2,7 @@ import { FC } from "react";
 import { getServerSession, Session } from "next-auth";
 
 import SignInButton from "@/app/components/SignInButton";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/lib/constants/auth.constants";
 
 const Header: FC = async () => {
   const session: Session | null = await getServerSession(authOptions);
