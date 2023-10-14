@@ -17,7 +17,7 @@ const Input: FC<IProps> = ({ handleSubmit, disabled }) => {
   };
 
   return (
-    <div className="flex justify-center w-full mt-16">
+    <div className="flex justify-center w-full mt-16 fixed bottom-0 bg-white">
       <form
         onSubmit={handleFormSubmit} className="shadow-lg border-[1px] rounded-lg p-4 flex items-end gap-4 w-1/2">
         <textarea

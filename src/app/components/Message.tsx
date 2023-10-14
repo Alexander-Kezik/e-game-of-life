@@ -22,12 +22,7 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
   const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(text);
 
   return (
-    <div
-      className={clsx(
-        "border-b border-gray-300 flex flex-col items-center",
-        from === Creator.ASSISTANT && "bg-assistant",
-      )}
-    >
+    <div className={clsx("border-b border-gray-300", from === Creator.ASSISTANT && "bg-assistant")}>
       <div
         className={clsx(
           "flex w-[740px] justify-between px-4 py-6",
@@ -38,13 +33,11 @@ const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawin
         {from === Creator.USER && <div className="msg-item bg-me-icon">ME</div>}
         <pre className="w-[653px] whitespace-pre-wrap overflow-auto">{text}</pre>
       </div>
-      {
-        localStorageMessages &&
-        !isSavedMsg(localStorageMessages, id) &&
-        from === Creator.ASSISTANT &&
-        requiresDrawing && (
+      {localStorageMessages && !isSavedMsg(localStorageMessages, id) && requiresDrawing && (
+        <div className="flex justify-center">
           <GameOfLife match={match} />
-        )}
+        </div>
+      )}
     </div>
   );
 };

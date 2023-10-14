@@ -51,12 +51,8 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
 
     const response: Response = await fetch("/api/chat", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
     });
 
     const data: ReadableStream<Uint8Array> | null = response.body;

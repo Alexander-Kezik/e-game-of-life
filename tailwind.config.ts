@@ -9,7 +9,7 @@ const config: Config = {
       colors: {
         ["me-icon"]: "#a5f3fcff",
         ["assistant-icon"]: "#f19a0bff",
-        assistant: "#e5e7ebff",
+        assistant: "#f1f2f3",
         cancel: "#ee4343",
         success: "#10b932",
       },

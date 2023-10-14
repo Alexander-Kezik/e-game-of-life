@@ -14,10 +14,10 @@ const GPTPage: FC = () => {
   const { isLoading, error, handleSubmit, messages } = useGPTMessages(session?.user?.email || "");
 
   return (
-    <main className="pb-12">
+    <main className="pb-20">
       {session?.user?.email ? (
         <>
-          <div className="w-full mx-2 flex flex-col items-start gap-3 pt-6 last:mb-6 md:mx-auto md:max-w-3xl">
+          <div className="w-full flex flex-col items-center gap-3 pt-6">
             {messages.map(({ from, content, requiresDrawing, id }: MessageType) => (
               <Message
                 from={from}
