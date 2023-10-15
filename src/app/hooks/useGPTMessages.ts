@@ -57,11 +57,9 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     const currentResponse: Message = getAssistantInitialMsg(email);
     setMessages(prev => [...prev, userMessage]);
 
-    let timeoutError: boolean = false;
     const timer = setTimeout(() => {
       setError("The maximum response waiting time has been exceeded");
       setIsLoading(false);
-      timeoutError = true;
 
       reader.cancel();
     }, VERCEL_TIMEOUT_IN_MILLISEC);
@@ -78,8 +76,6 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
         break;
       }
     }
-
-    if (timeoutError) return;
 
     if (TO_DRAW_REGEX.exec(currentResponse.content)) {
       currentResponse.requiresDrawing = true;
