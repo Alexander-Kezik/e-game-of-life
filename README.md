@@ -65,4 +65,5 @@ Iterations: 500
 500
 </pre>
 
-Sometimes GPT may send messages in an invalid format, in which case, please resend the message.
+1. Sometimes GPT may send messages in an invalid format, in which case, please resend the message.
+2. Sometimes Game of Life can go beyond the matrix boundary, and you can see an empty drawing.

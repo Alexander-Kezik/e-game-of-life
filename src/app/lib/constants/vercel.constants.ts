@@ -1,0 +1,2 @@
+export const VERCEL_TIMEOUT_IN_SEC = 300;
+export const VERCEL_TIMEOUT_IN_MILLISEC = 300000;

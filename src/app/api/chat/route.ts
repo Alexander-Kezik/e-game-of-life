@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { AUTH_OPTIONS } from "@/app/lib/constants/auth.constants";
 import { Message } from "@/app/lib/types/message.type";
+import { VERCEL_TIMEOUT_IN_SEC } from "@/app/lib/constants/vercel.constants";
 
 type RequestData = {
   message: string;
@@ -16,7 +17,7 @@ const openai: OpenAI = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
 });
 
-export const maxDuration = 300;
+export const maxDuration = VERCEL_TIMEOUT_IN_SEC;
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const session: Session | null = await getServerSession(AUTH_OPTIONS);

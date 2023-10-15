@@ -6,6 +6,7 @@ import { getItem, resetItems, setItem } from "@/app/lib/utils/localStorageHelper
 import { getAssistantInitialMsg, getUserInitialMsg } from "@/app/lib/utils/initialMessages";
 import { GPT_MESSAGES_KEY } from "@/app/lib/constants/localStorageKeys.constants";
 import { toRequiresDrawingFalse, toValidGPTHistory } from "@/app/lib/utils/transformers";
+import { VERCEL_TIMEOUT_IN_MILLISEC, VERCEL_TIMEOUT_IN_SEC } from "@/app/lib/constants/vercel.constants";
 
 interface GPTMessagesHookResult {
   messages: Message[];
@@ -56,6 +57,15 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     const currentResponse: Message = getAssistantInitialMsg(email);
     setMessages(prev => [...prev, userMessage]);
 
+    let timeoutError: boolean = false;
+    const timer = setTimeout(() => {
+      setError("The maximum response waiting time has been exceeded");
+      setIsLoading(false);
+      timeoutError = true;
+
+      reader.cancel();
+    }, VERCEL_TIMEOUT_IN_MILLISEC);
+
     while (true) {
       const { value, done } = await reader.read();
       const chunkValue = decoder.decode(value);
@@ -63,8 +73,13 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
       currentResponse.content += chunkValue;
       setMessages(prev => [...prev.slice(0, -1), currentResponse]);
 
-      if (done) break;
+      if (done) {
+        clearTimeout(timer);
+        break;
+      }
     }
+
+    if (timeoutError) return;
 
     if (TO_DRAW_REGEX.exec(currentResponse.content)) {
       currentResponse.requiresDrawing = true;
@@ -73,7 +88,7 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
 
     setItem(GPT_MESSAGES_KEY, [...messages, userMessage, currentResponse]);
     setIsLoading(false);
-  }
+  };
 
   const sendMessage = async (message: string) => {
     if (!message) return;
