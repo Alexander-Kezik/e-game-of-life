@@ -20,13 +20,13 @@ export async function POST(request: NextRequest, response: NextResponse) {
   const session: Session | null = await getServerSession(AUTH_OPTIONS);
 
   if (!session) {
-    return new Response("Not authorized", { status: 401 });
+    return NextResponse.json("Not authorized", { status: 401 });
   }
 
   const { message, history } = (await request.json()) as RequestData;
 
   if (!message) {
-    return new Response("No message in the request", { status: 400 });
+    return NextResponse.json("No message in the request", { status: 400 });
   }
 
   try {
@@ -57,15 +57,15 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
       switch (status) {
         case 400:
-          return NextResponse.json(message, { status });
+          return NextResponse.json("You can send 4096 tokens tops", { status });
         case 401:
-          return NextResponse.json(message, { status });
+          return NextResponse.json("Invalid API key", { status });
         case 429:
-          return NextResponse.json(message, { status });
+          return NextResponse.json("3 requests per minute allowed, try after 20 seconds", { status });
         case 500:
-          return NextResponse.json(message, { status });
+          return NextResponse.json("Server error while processing your request, try again later", { status });
         case 503:
-          return NextResponse.json(message, { status });
+          return NextResponse.json("GPT is currently unavailable or overloaded, try again later", { status });
         default:
           return NextResponse.json("Unexpected error, try again later.", { status });
       }
