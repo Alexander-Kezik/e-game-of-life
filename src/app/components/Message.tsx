@@ -8,7 +8,7 @@ import { useGPTMessages } from "@/app/hooks/useGPTMessages";
 import GameOfLife from "@/app/components/GameOfLife";
 
 interface IProps {
-  from: Creator;
+  role: Creator;
   text: string;
   id?: string;
   owner?: string | null | undefined;
@@ -16,21 +16,23 @@ interface IProps {
   requiresDrawing?: boolean;
 }
 
-const Message: FC<IProps> = ({ from, text, owner, isErrorMessage, requiresDrawing, id }) => {
+const Message: FC<IProps> = ({ role, text, owner, isErrorMessage, requiresDrawing, id }) => {
   const { localStorageMessages } = useGPTMessages(owner || "");
+  console.log(id)
+  console.log(localStorageMessages)
 
   const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(text);
 
   return (
-    <div className={clsx("border-b border-gray-300", from === Creator.ASSISTANT && "bg-assistant")}>
+    <div className={clsx("border-b border-gray-300", role === Creator.ASSISTANT && "bg-assistant")}>
       <div
         className={clsx(
           "flex w-[740px] justify-between px-4 py-6",
           isErrorMessage && "shadow-[inset_0_0_1.5em_red] rounded-md",
         )}
       >
-        {from === Creator.ASSISTANT && <div className="msg-item bg-assistant-icon">GPT</div>}
-        {from === Creator.USER && <div className="msg-item bg-me-icon">ME</div>}
+        {role === Creator.ASSISTANT && <div className="msg-item bg-assistant-icon">GPT</div>}
+        {role === Creator.USER && <div className="msg-item bg-me-icon">ME</div>}
         <pre className="w-[653px] whitespace-pre-wrap overflow-auto">{text}</pre>
       </div>
       {localStorageMessages && !isSavedMsg(localStorageMessages, id) && requiresDrawing && (

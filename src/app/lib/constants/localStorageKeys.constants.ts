@@ -1,0 +1,1 @@
+export const GPT_MESSAGES_KEY: string = "gptMessages";

@@ -1,7 +1,7 @@
 import { FC, MutableRefObject, useEffect, useRef } from "react";
 
 import { useGameOfLife } from "@/app/hooks/useGameOfLife";
-import { stringToGameOfLifeParams } from "@/app/lib/utils/stringToGameOfLifeParams";
+import { stringToGameOfLifeParams } from "@/app/lib/utils/transformers";
 
 interface IProps {
   match: RegExpExecArray | null;

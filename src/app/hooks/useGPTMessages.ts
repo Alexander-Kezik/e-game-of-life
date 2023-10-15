@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { v4 } from "uuid";
 
 import { Message } from "@/app/lib/types/message.type";
 import { TO_DRAW_REGEX } from "@/app/lib/constants/regex.constants";
-import { Creator } from "@/app/lib/types/creator.enum";
+import { getItem, resetItems, setItem } from "@/app/lib/utils/localStorageHelpers";
+import { getAssistantInitialMsg, getUserInitialMsg } from "@/app/lib/utils/initialMessages";
+import { GPT_MESSAGES_KEY } from "@/app/lib/constants/localStorageKeys.constants";
+import { toRequiresDrawingFalse, toValidGPTHistory } from "@/app/lib/utils/transformers";
 
 interface GPTMessagesHookResult {
   messages: Message[];
-  handleSubmit: (message: string) => Promise<void>;
+  sendMessage: (message: string) => Promise<void>;
+  clearMessages: () => void;
   isLoading: boolean;
   localStorageMessages: Message[] | null;
   error: string;
@@ -26,40 +29,23 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    const savedMessages: string | null = localStorage.getItem("gpt-messages");
-    const initialMessages: Message[] = savedMessages ? JSON.parse(savedMessages) : [];
+    const initialMessages: Message[] = getItem(GPT_MESSAGES_KEY) || [];
     setLocalStorageMessages(initialMessages);
 
     setMessages(initialMessages.filter(message => message.owner === email));
   }, [email]);
 
-  const handleSubmit = async (message: string) => {
-    setIsLoading(true);
-    setError("");
+  const clearMessages = () => {
+    resetItems(GPT_MESSAGES_KEY);
+    setMessages([]);
+    setLocalStorageMessages([]);
+  };
 
-    if (!message) return;
-
-    const userMessage: Message = {
-      id: v4(),
-      content: message,
-      from: Creator.USER,
-      owner: email,
-      requiresDrawing: false,
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-
-    const response: Response = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
-
+  const readStream = async (response: Response, userMessage: Message) => {
     const data: ReadableStream<Uint8Array> | null = response.body;
     if (!data) return;
 
     const reader: ReadableStreamDefaultReader<Uint8Array> = data.getReader();
-
     const decoder: TextDecoder = new TextDecoder();
 
     if (!response.ok) {
@@ -70,14 +56,7 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
       return;
     }
 
-    const currentResponse: Message = {
-      id: v4(),
-      from: Creator.ASSISTANT,
-      content: "",
-      owner: email,
-      requiresDrawing: false,
-    };
-
+    const currentResponse: Message = getAssistantInitialMsg(email);
     setMessages(prev => [...prev, userMessage]);
 
     while (true) {
@@ -92,12 +71,33 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
 
     if (TO_DRAW_REGEX.exec(currentResponse.content)) {
       currentResponse.requiresDrawing = true;
+      setMessages(prev => [...toRequiresDrawingFalse(prev.slice(0, -1)), currentResponse]);
     }
 
-    setMessages(prev => [...prev.slice(0, -1), currentResponse]);
+    setItem(GPT_MESSAGES_KEY, [...messages, userMessage, currentResponse]);
     setIsLoading(false);
-    localStorage.setItem("gpt-messages", JSON.stringify([...messages, userMessage, currentResponse]));
+  }
+
+  const sendMessage = async (message: string) => {
+    if (!message) return;
+
+    setIsLoading(true);
+    setError("");
+
+    const userMessage: Message = getUserInitialMsg(message, email);
+    setMessages(prev => [...prev, userMessage]);
+
+    const response: Response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        history: toValidGPTHistory(messages),
+        message,
+      }),
+    });
+
+    await readStream(response, userMessage);
   };
 
-  return { messages, handleSubmit, isLoading, localStorageMessages, error };
+  return { messages, sendMessage, isLoading, localStorageMessages, error, clearMessages };
 }

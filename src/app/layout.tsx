@@ -7,7 +7,7 @@ import { getServerSession, Session } from "next-auth";
 import NextAuthProvider from "@/app/components/SessionProvider";
 import Header from "@/app/components/Header";
 import AuthProvider from "@/app/components/AuthProvider";
-import { authOptions } from "@/app/lib/constants/auth.constants";
+import { AUTH_OPTIONS } from "@/app/lib/constants/auth.constants";
 
 import "./globals.css";
 
@@ -26,7 +26,7 @@ interface IProps {
 }
 
 const RootLayout: FC<IProps> = async ({ children }) => {
-  const session: Session | null = await getServerSession(authOptions);
+  const session: Session | null = await getServerSession(AUTH_OPTIONS);
 
   return (
     <html lang="en">

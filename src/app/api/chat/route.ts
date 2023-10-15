@@ -4,25 +4,26 @@ import { ChatCompletionChunk } from "openai/resources/chat/completions";
 import { getServerSession, Session } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-import { authOptions } from "@/app/lib/constants/auth.constants";
+import { AUTH_OPTIONS } from "@/app/lib/constants/auth.constants";
+import { Message } from "@/app/lib/types/message.type";
 
 const openai: OpenAI = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
 });
 
 type RequestData = {
-  currentModel: string;
   message: string;
+  history: Message[];
 };
 
 export async function POST(request: NextRequest, response: NextResponse) {
-  const session: Session | null = await getServerSession(authOptions);
+  const session: Session | null = await getServerSession(AUTH_OPTIONS);
 
   if (!session) {
     return new Response("Not authorized", { status: 401 });
   }
 
-  const { message } = (await request.json()) as RequestData;
+  const { message, history } = (await request.json()) as RequestData;
 
   if (!message) {
     return new Response("No message in the request", { status: 400 });
@@ -31,7 +32,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const completion: Stream<ChatCompletionChunk> = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
+      messages: [...history, { role: "user", content: message }],
       stream: true,
     });
 
@@ -51,8 +52,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
     return new Response(stream);
   } catch (e) {
     if (e instanceof APIError) {
-      const status = e.status;
-      const message = (e.error as { message: string }).message;
+      const status: number | undefined = e.status;
+      const message: string = (e.error as { message: string }).message;
 
       switch (status) {
         case 400:
