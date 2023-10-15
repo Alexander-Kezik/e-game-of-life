@@ -7,7 +7,5 @@ import { Message } from "@/app/lib/types/message.type";
  * @returns {boolean} Returns true if a message with the specified ID is found, otherwise returns false.
  */
 export const isSavedMsg = (initialMessages: Message[], id: string | undefined): boolean => {
-  console.log(initialMessages)
-  console.log(id)
   return initialMessages.some(msg => msg.id === id);
 };

@@ -18,9 +18,6 @@ interface IProps {
 
 const Message: FC<IProps> = ({ role, text, owner, isErrorMessage, requiresDrawing, id }) => {
   const { localStorageMessages } = useGPTMessages(owner || "");
-  console.log(id)
-  console.log(localStorageMessages)
-
   const match: RegExpExecArray | null = TO_DRAW_REGEX.exec(text);
 
   return (
