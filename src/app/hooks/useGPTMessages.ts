@@ -6,7 +6,7 @@ import { getItem, resetItems, setItem } from "@/app/lib/utils/localStorageHelper
 import { getAssistantInitialMsg, getUserInitialMsg } from "@/app/lib/utils/initialMessages";
 import { GPT_MESSAGES_KEY } from "@/app/lib/constants/localStorageKeys.constants";
 import { toRequiresDrawingFalse, toValidGPTHistory } from "@/app/lib/utils/transformers";
-import { VERCEL_TIMEOUT_IN_MILLISEC, VERCEL_TIMEOUT_IN_SEC } from "@/app/lib/constants/vercel.constants";
+import { VERCEL_TIMEOUT_IN_MILLISEC } from "@/app/lib/constants/vercel.constants";
 
 interface GPTMessagesHookResult {
   messages: Message[];
