@@ -16,7 +16,7 @@ const openai: OpenAI = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
 });
 
-export const maxDuration = 200;
+export const maxDuration = 300;
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const session: Session | null = await getServerSession(AUTH_OPTIONS);
