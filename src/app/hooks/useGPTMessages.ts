@@ -12,7 +12,6 @@ interface GPTMessagesHookResult {
   sendMessage: (message: string) => Promise<void>;
   clearMessages: () => void;
   isLoading: boolean;
-  localStorageMessages: Message[] | null;
   error: string;
 }
 
@@ -24,21 +23,19 @@ interface GPTMessagesHookResult {
  */
 export function useGPTMessages(email: string): GPTMessagesHookResult {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [localStorageMessages, setLocalStorageMessages] = useState<Message[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const initialMessages: Message[] = getItem(GPT_MESSAGES_KEY) || [];
-    setLocalStorageMessages(initialMessages);
+    const filteredMessages: Message[] = initialMessages.filter(message => message.owner === email);
 
-    setMessages(initialMessages.filter(message => message.owner === email));
+    setMessages(toRequiresDrawingFalse(filteredMessages));
   }, [email]);
 
   const clearMessages = () => {
     resetItems(GPT_MESSAGES_KEY);
     setMessages([]);
-    setLocalStorageMessages([]);
   };
 
   const readStream = async (response: Response, userMessage: Message) => {
@@ -99,5 +96,5 @@ export function useGPTMessages(email: string): GPTMessagesHookResult {
     await readStream(response, userMessage);
   };
 
-  return { messages, sendMessage, isLoading, localStorageMessages, error, clearMessages };
+  return { messages, sendMessage, isLoading, error, clearMessages };
 }

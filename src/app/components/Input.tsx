@@ -1,8 +1,8 @@
 import { FC, FormEvent, KeyboardEvent, useState } from "react";
 import Image from "next/image";
-import clsx from "clsx";
 
 import { PREPARED_PROMPT } from "@/app/lib/constants/prompt.constants";
+import SendBtn from "@/app/components/SendBtn";
 
 interface IProps {
   sendMessage: (message: string) => void;
@@ -39,29 +39,13 @@ const Input: FC<IProps> = ({ sendMessage, disabled }) => {
           disabled={disabled}
           className="outline-none max-h-200 resize-none w-full border-none"
         ></textarea>
-        <button
-          className={clsx(
-            "rounded-md w-12 h-10 border-none flex justify-center items-center",
-            disabled && "cursor-not-allowed bg-red-500",
-            !disabled && "bg-success cursor-pointer",
-          )}
-          disabled={disabled}
-        >
+        <SendBtn disabled={disabled} className="w-10 h-10">
           <Image src="/send_icon.png" alt="send prompt" width={20} height={20} />
-        </button>
-        <button
-          type="button"
-          onClick={() => sendMessage(PREPARED_PROMPT)}
-          className={clsx(
-            "rounded-md w-40 h-10 border-none flex justify-center items-center text-white",
-            disabled && "cursor-not-allowed bg-red-500",
-            !disabled && "bg-amber-500 cursor-pointer",
-          )}
-          disabled={disabled}
-        >
-          PLAY GAME
-        </button>
+        </SendBtn>
       </form>
+      <SendBtn disabled={disabled} onClick={() => sendMessage(PREPARED_PROMPT)} className="p-4 ml-2">
+        PLAY GAME
+      </SendBtn>
     </div>
   );
 };

@@ -53,7 +53,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
   } catch (e) {
     if (e instanceof APIError) {
       const status: number | undefined = e.status;
-      const message: string = (e.error as { message: string }).message;
 
       switch (status) {
         case 400:

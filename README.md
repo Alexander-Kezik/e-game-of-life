@@ -4,7 +4,7 @@ Things I want to note:
 1. An application based on **Next.js** framework.
 2. Was decided to choose a common **openai** library because of the clear documentation and simple error handling.
 3. The application uses the **SSE** transport to render the output stream of the model as it is generated. Attention was paid to handling cases such as an empty invitation, an authorized request, an invalid API key, etc. Also, error messages are displayed in the client as messages from OpenAI.
-4. Social login implemented using **next-auth**, and Google was selected for OAuth.
+4. Social login implemented using **next-auth**, and Google was selected for OAuth. Each user has their own message history.
 5. The application stores messages history in the local storage.
 6. If OpenAI responds with a 0&1 matrix inside the ``` block and with the number then (number of iterations), the application will start the game of life using the provided matrix and iterations number, and sends the result back. The application will display the result on canvas.
 
@@ -38,3 +38,31 @@ Starting State:
 Number of Iterations: 500</pre>
 
 ![Local image](./game-of-life-example.png)
+
+## Important
+
+The game of life begins when the assistant responds in the following format:
+<pre>/```[\s\S ]+?([10][01\n ]+?)```[\s\S ]+?(\d+)/i</pre>
+
+Example of allowed responses:
+<pre>
+```markdawn
+10101011
+11101011
+...
+```
+
+Iterations: 500
+</pre>
+
+<pre>
+```
+1 0 1 0 1 0 1 1
+1 1 1 0 1 0 1 1
+...
+```
+
+500
+</pre>
+
+Sometimes GPT may send messages in an invalid format, in which case, please resend the message.

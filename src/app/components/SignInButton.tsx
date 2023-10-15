@@ -3,28 +3,22 @@
 import { FC } from "react";
 import { Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
+import clsx from "clsx";
 
 interface IProps {
   session: Session | null;
 }
 
 const SignInButton: FC<IProps> = ({ session }) => {
+  const handleAuth = () => session ? signOut() : signIn();
+
   return (
-    <>
-      {session ? (
-        <button
-          onClick={() => signOut()}
-          className="btn-main bg-cancel">
-          Sign Out
-        </button>
-      ) : (
-        <button
-          onClick={() => signIn()}
-          className="btn-main bg-success">
-          Sign In
-        </button>
-      )}
-    </>
+    <button
+      onClick={handleAuth}
+      className={clsx("btn-main", session ? "bg-cancel" : "bg-success")}
+    >
+      {session ? "Sign Out" : "Sign In"}
+    </button>
   );
 };
 

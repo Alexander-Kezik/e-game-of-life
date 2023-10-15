@@ -8,7 +8,15 @@
   }
 
   .msg-item {
-    @apply flex justify-center items-center text-white rounded w-10 h-10
+    @apply flex justify-center items-center text-white rounded w-10 h-10;
+  }
+
+  .input-send-btn {
+    @apply rounded-md border-none flex justify-center items-center text-white;
+  }
+
+  .btn-disabled {
+    @apply cursor-not-allowed bg-cancel;
   }
 }
 
