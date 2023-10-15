@@ -7,14 +7,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { AUTH_OPTIONS } from "@/app/lib/constants/auth.constants";
 import { Message } from "@/app/lib/types/message.type";
 
-const openai: OpenAI = new OpenAI({
-  apiKey: process.env.OPENAI_KEY,
-});
-
 type RequestData = {
   message: string;
   history: Message[];
 };
+
+const openai: OpenAI = new OpenAI({
+  apiKey: process.env.OPENAI_KEY,
+});
+
+export const maxDuration = 200;
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const session: Session | null = await getServerSession(AUTH_OPTIONS);
